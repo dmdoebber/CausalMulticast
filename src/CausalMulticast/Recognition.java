@@ -8,7 +8,6 @@ package CausalMulticast;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
-import java.util.Arrays;
 
 /**
  *
@@ -22,9 +21,7 @@ public class Recognition extends Thread {
     public Recognition(MulticastSocket rede){
         this.rede = rede;
     }
-    
-    
-    
+
     @Override
     public void run(){
         while(true){

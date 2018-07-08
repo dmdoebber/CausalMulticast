@@ -40,16 +40,13 @@ public class CMChannel{
         String msg = "join" + "-" + user + "-" + dest;
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
         
-        System.out.println(msg);
-        
         this.rede.send(sendPacket);
     }   
     
     public void leave(String user, String dest) throws UnknownHostException, IOException{
+        
         String msg = "leave" + "-" + user + "-" + dest;
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
-        
-        System.out.println(msg);
         
         this.rede.send(sendPacket);
         
