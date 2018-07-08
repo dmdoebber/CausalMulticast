@@ -7,7 +7,10 @@ package CausalMulticast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.SocketException;
 
 /**
  *
@@ -15,11 +18,13 @@ import java.net.MulticastSocket;
  */
 public class Recognition extends Thread {
     private DatagramPacket receivePacket;
-    private byte[] buffer = new byte[256];
-    private MulticastSocket rede;
+    private DatagramSocket socket;
+    private byte[] buffer;
     
-    public Recognition(MulticastSocket rede){
-        this.rede = rede;
+    
+    public Recognition(InetAddress IP_MIDDLEWARE, int PORTA) throws SocketException{
+        buffer = new byte[256];
+        socket = new DatagramSocket(PORTA, IP_MIDDLEWARE);
     }
 
     @Override
@@ -28,8 +33,8 @@ public class Recognition extends Thread {
             try{
                 
                 receivePacket = new DatagramPacket(buffer, buffer.length);
-                rede.receive(receivePacket);
-                System.out.println(new String(buffer, 0));
+                socket.receive(receivePacket);
+                System.out.println(new String(buffer));
             
             }catch(IOException ex){
                 System.out.println("Error thread recognition: " + ex);
