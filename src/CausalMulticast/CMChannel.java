@@ -21,16 +21,23 @@ public class CMChannel{
     private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("224.0.0.1");
     
     private final MulticastSocket rede;
-    private DatagramSocket socket;
+    private final DatagramSocket socket;
     private DatagramPacket sendPacket;
     
     private final ICausalMulticast application;
     private final Recognition recognition;
     
+    private final String MyIP = InetAddress.getLocalHost().getHostAddress();
+    
+    
     public CMChannel(ICausalMulticast application) throws IOException{
+        
+        
         rede = new MulticastSocket(PORTA);
         socket = new DatagramSocket();
         this.application = (ICausalMulticast) application;
+        
+        rede.setBroadcast(true);
         
         recognition = new Recognition(rede);
         recognition.start();
@@ -42,6 +49,8 @@ public class CMChannel{
         String msg = "join" + "-" + user + "-" + dest;
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
         socket.send(sendPacket);
+        
+        
     }   
     
     public void leave(String user, String dest) throws UnknownHostException, IOException{
@@ -49,13 +58,19 @@ public class CMChannel{
         String msg = "leave" + "-" + user + "-" + dest;
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
         
+        
         socket.send(sendPacket);
         
         rede.leaveGroup(IP_MIDDLEWARE);    
     }
     
-    public void mcSend(String msg, String dest){
-       this.application.deliver(msg, dest); 
+    public void mcSend(String msg, String dest) throws IOException{
+       this.application.deliver(MyIP, msg); //mudar
+       
+       sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
+        
+       socket.send(sendPacket);
+      
         
     }
 }

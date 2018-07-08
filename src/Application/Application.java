@@ -167,8 +167,9 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
             String dest = nameGroup.getText();
             String user = InetAddress.getLocalHost().getHostAddress();
             
-            if(!dest.equals(""))
-                this.canal.join(user, dest);
+            if(dest.equals("")) return;
+                
+            this.canal.join(user, dest);
                 
             
             
@@ -204,7 +205,7 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         
     }//GEN-LAST:event_leaveActionPerformed
 
-    private void send(){
+    private void send() throws IOException{
         String msg = textSend.getText();
         String dest = nameGroup.getText();
         
@@ -219,15 +220,24 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
     }
     
     private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
-       
-        this.send();
+        
+        try{
+            this.send();
+        }catch(IOException ex){
+            System.out.println("Erro send "+ ex);
+        }
+        
         
     }//GEN-LAST:event_sendActionPerformed
 
     private void textSendKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textSendKeyPressed
-
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
-           this.send();
+                
+        try{
+            if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+                this.send();
+        }catch(IOException ex){
+            System.out.println("Erro send "+ ex);
+        }
         
     }//GEN-LAST:event_textSendKeyPressed
 

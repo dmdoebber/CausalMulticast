@@ -7,7 +7,9 @@ package CausalMulticast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.MulticastSocket;
+import java.net.SocketException;
 
 /**
  *
@@ -16,9 +18,9 @@ import java.net.MulticastSocket;
 public class Recognition extends Thread {
     private DatagramPacket receivePacket;
     private byte[] buffer = new byte[256];
-    private MulticastSocket rede;
+    private final MulticastSocket rede;
     
-    public Recognition(MulticastSocket rede){
+    public Recognition(MulticastSocket rede) throws SocketException{
         this.rede = rede;
         this.buffer = new byte[256];
     }
