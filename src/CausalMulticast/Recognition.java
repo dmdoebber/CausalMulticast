@@ -7,10 +7,7 @@ package CausalMulticast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.SocketException;
 
 /**
  *
@@ -18,13 +15,12 @@ import java.net.SocketException;
  */
 public class Recognition extends Thread {
     private DatagramPacket receivePacket;
-    private DatagramSocket socket;
-    private byte[] buffer;
+    private byte[] buffer = new byte[256];
+    private MulticastSocket rede;
     
-    
-    public Recognition(int PORTA) throws SocketException{
-        buffer = new byte[256];
-        socket = new DatagramSocket(PORTA);
+    public Recognition(MulticastSocket rede){
+        this.rede = rede;
+        this.buffer = new byte[256];
     }
 
     @Override
@@ -33,7 +29,7 @@ public class Recognition extends Thread {
             try{
                 
                 receivePacket = new DatagramPacket(buffer, buffer.length);
-                socket.receive(receivePacket);
+                rede.receive(receivePacket);
                 System.out.println(new String(buffer));
             
             }catch(IOException ex){

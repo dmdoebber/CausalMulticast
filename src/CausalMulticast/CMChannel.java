@@ -7,6 +7,7 @@ package CausalMulticast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
@@ -19,18 +20,19 @@ public class CMChannel{
     private final int PORTA = 2020;
     private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("224.0.0.1");
     
-    private final ICausalMulticast application;
-    
     private final MulticastSocket rede;
+    private DatagramSocket socket;
     private DatagramPacket sendPacket;
     
-    private Recognition recognition;
+    private final ICausalMulticast application;
+    private final Recognition recognition;
     
     public CMChannel(ICausalMulticast application) throws IOException{
         rede = new MulticastSocket(PORTA);
+        socket = new DatagramSocket();
         this.application = (ICausalMulticast) application;
         
-        recognition = new Recognition(PORTA);
+        recognition = new Recognition(rede);
         recognition.start();
     }
     
@@ -39,8 +41,7 @@ public class CMChannel{
         
         String msg = "join" + "-" + user + "-" + dest;
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
-        
-        this.rede.send(sendPacket);
+        socket.send(sendPacket);
     }   
     
     public void leave(String user, String dest) throws UnknownHostException, IOException{
@@ -48,7 +49,7 @@ public class CMChannel{
         String msg = "leave" + "-" + user + "-" + dest;
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
         
-        this.rede.send(sendPacket);
+        socket.send(sendPacket);
         
         rede.leaveGroup(IP_MIDDLEWARE);    
     }
