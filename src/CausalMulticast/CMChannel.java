@@ -15,11 +15,11 @@ import java.net.UnknownHostException;
  * @author danie
  */
 public class CMChannel {
-    private MulticastSocket rede;
+    private final MulticastSocket rede;
     private final int PORTA = 2020;
-    private final String IP = "223.0.0.1";
-    private final ICausalMulticast application;
+    private final String IP_MIDDLEWARE = "224.0.0.1";
     
+    private final ICausalMulticast application;
     
     public CMChannel(ICausalMulticast application) throws IOException{
         rede = new MulticastSocket(PORTA);
@@ -28,7 +28,12 @@ public class CMChannel {
     
     public void join(String user, String dest) throws UnknownHostException, IOException{
         
-        rede.joinGroup(InetAddress.getByName(user));        
+        
+        
+        
+        rede.joinGroup(InetAddress.getByName(IP_MIDDLEWARE));        
+        
+        //InetAddress.getByName(user) ip recebido
     }
     
     public void leave(String user, String dest) throws UnknownHostException, IOException{
