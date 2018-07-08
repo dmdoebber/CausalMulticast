@@ -21,14 +21,14 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
     
     private List<String> buffer;
     private DefaultListModel listBuffer;
-    private CausalMulticast middleware;
+    private CMChannel canal;
     
     public Application() throws IOException {
         initComponents();
         
         this.buffer = new ArrayList();
         this.listBuffer = new DefaultListModel();
-        this.middleware = new CausalMulticast(this);
+        this.canal = new CMChannel(this);
         
         this.jListBuffer.setModel(listBuffer);
     }  
@@ -166,8 +166,10 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
             String user = InetAddress.getLocalHost().getHostAddress();
             
             if(!dest.equals(""))
-                this.middleware.join(user, dest);
+                this.canal.join(user, dest);
                 
+            
+            
             this.join.setEnabled(false);
             this.nameGroup.setEditable(false);
             this.leave.setEnabled(true);
@@ -186,7 +188,9 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
             String dest = nameGroup.getText();
             String user = InetAddress.getLocalHost().getHostAddress();
             
-            this.middleware.leave(user, dest);
+            this.canal.leave(user, dest);
+            
+            
             
             this.join.setEnabled(true);
             this.nameGroup.setEditable(true);
@@ -208,7 +212,7 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         this.buffer.add(msg);
         this.listBuffer.addElement(msg);
         
-        this.middleware.mcSend(msg, dest);
+        this.canal.mcSend(msg, dest);
         
         this.textSend.setText("");
     }

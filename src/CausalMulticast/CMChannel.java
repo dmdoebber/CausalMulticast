@@ -14,16 +14,17 @@ import java.net.UnknownHostException;
  *
  * @author danie
  */
-public class CausalMulticast {
+public class CMChannel {
     private MulticastSocket rede;
     private final int PORTA = 2020;
     private final String IP = "223.0.0.1";
     private final ICausalMulticast application;
     
     
-    public CausalMulticast(Object application) throws IOException{
+    public CMChannel(Object application) throws IOException{
         rede = new MulticastSocket(PORTA);
         this.application = (ICausalMulticast) application;
+        
     }
     
     public void join(String user, String dest) throws UnknownHostException, IOException{
