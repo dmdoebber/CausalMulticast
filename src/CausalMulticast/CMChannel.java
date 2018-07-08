@@ -30,7 +30,7 @@ public class CMChannel{
         rede = new MulticastSocket(PORTA);
         this.application = (ICausalMulticast) application;
         
-        recognition = new Recognition(IP_MIDDLEWARE, PORTA);
+        recognition = new Recognition(PORTA);
         recognition.start();
     }
     

@@ -22,9 +22,9 @@ public class Recognition extends Thread {
     private byte[] buffer;
     
     
-    public Recognition(InetAddress IP_MIDDLEWARE, int PORTA) throws SocketException{
+    public Recognition(int PORTA) throws SocketException{
         buffer = new byte[256];
-        socket = new DatagramSocket(PORTA, IP_MIDDLEWARE);
+        socket = new DatagramSocket(PORTA);
     }
 
     @Override
