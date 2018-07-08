@@ -192,10 +192,9 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
             
             this.canal.leave(user, dest);
             
-            
-            
             this.join.setEnabled(true);
             this.nameGroup.setEditable(true);
+            this.leave.setEnabled(false);
             this.textSend.setEnabled(false);
             this.send.setEnabled(false);
             
