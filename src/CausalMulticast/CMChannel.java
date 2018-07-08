@@ -21,10 +21,9 @@ public class CMChannel {
     private final ICausalMulticast application;
     
     
-    public CMChannel(Object application) throws IOException{
+    public CMChannel(ICausalMulticast application) throws IOException{
         rede = new MulticastSocket(PORTA);
         this.application = (ICausalMulticast) application;
-        
     }
     
     public void join(String user, String dest) throws UnknownHostException, IOException{
@@ -37,7 +36,7 @@ public class CMChannel {
     }
     
     public void mcSend(String msg, String dest){
-        
+       this.application.deliver(msg, dest); 
         
     }
 }

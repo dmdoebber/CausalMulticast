@@ -6,6 +6,7 @@
 package Application;
 
 import CausalMulticast.*;
+import CausalMulticast.ICausalMulticast;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -28,6 +29,7 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         
         this.buffer = new ArrayList();
         this.listBuffer = new DefaultListModel();
+        System.out.println("criou");
         this.canal = new CMChannel(this);
         
         this.jListBuffer.setModel(listBuffer);
