@@ -28,7 +28,7 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         
         this.buffer = new ArrayList();
         this.listBuffer = new DefaultListModel();
-        this.middleware = new CausalMulticast();
+        this.middleware = new CausalMulticast(this);
         
         this.jListBuffer.setModel(listBuffer);
     }  
