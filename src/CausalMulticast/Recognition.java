@@ -28,6 +28,7 @@ public class Recognition extends Thread {
     private CMChannel chanel;
     
     public String MyGroup;
+    private final String MyIP = InetAddress.getLocalHost().getHostAddress();
     
     public Recognition(CMChannel chanel) throws IOException{
         this.MyGroup = "";
@@ -66,8 +67,7 @@ public class Recognition extends Thread {
                 if(MyGroup.equalsIgnoreCase(group)){
                     switch (action) {
                         case "join":
-                            if(chanel.userList.contains(user))
-                                chanel.userList.add(user); 
+                            chanel.userList.add(user); 
                             
                             String msg = "inGroup" + "-" + user + "-" + group + "-";
                             sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
@@ -78,7 +78,8 @@ public class Recognition extends Thread {
                             break;
                             
                         case "inGroup":
-                            chanel.userList.add(user); 
+                            if(!user.equals(MyIP) && chanel.userList.contains(user))
+                                chanel.userList.add(user); 
                             break;
                         default:
                             System.out.println("Função inválida!");
