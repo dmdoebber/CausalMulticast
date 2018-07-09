@@ -55,6 +55,7 @@ public class CMChannel{
     }   
     
     public void leave(String user, String dest) throws IOException{
+        this.userList.clear();
         
         String msg = "leave" + "-" + user + "-" + dest + "-";
         
