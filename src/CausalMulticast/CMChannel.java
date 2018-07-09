@@ -26,7 +26,7 @@ public class CMChannel{
     private final Recognition recognition;
     
     private List<String> userList;
-    private String MyGroup;
+    
     
     private final String MyIP = InetAddress.getLocalHost().getHostAddress();
     
@@ -43,7 +43,8 @@ public class CMChannel{
     public void join(String user, String dest) throws IOException{
         rede.joinGroup(IP_MIDDLEWARE); 
         
-        this.MyGroup = dest;
+        this.recognition.MyGroup = dest;
+        
         String msg = "join" + "-" + user + "-" + dest;
         
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);

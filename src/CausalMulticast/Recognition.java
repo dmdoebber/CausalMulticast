@@ -26,12 +26,11 @@ public class Recognition extends Thread {
     private byte[] buffer;
     
     private CMChannel chanel;
-    
+    public String MyGroup;
     
     public Recognition(CMChannel chanel) throws IOException{
         this.chanel = chanel;
         this.rede = new MulticastSocket(PORTA);
-        this.buffer = new byte[256];
     }
 
     @Override
@@ -49,7 +48,7 @@ public class Recognition extends Thread {
         
         while(true){
             try{
-                
+                this.buffer = new byte[256];
                 receivePacket = new DatagramPacket(buffer, buffer.length);
                 rede.receive(receivePacket);
                 
@@ -60,7 +59,8 @@ public class Recognition extends Thread {
                 
                 System.out.println(Arrays.toString(info));
                 
-                if(group.equals("MyGroup")){
+                if(group.equals(MyGroup)){
+                    System.out.println("entrou no meu grupo");
                     
                 }
                 
