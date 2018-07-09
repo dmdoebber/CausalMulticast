@@ -104,7 +104,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Gurpo:"/>
+            <Property name="text" type="java.lang.String" value="Grupo:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="nameGroup">

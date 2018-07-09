@@ -16,13 +16,20 @@ import java.util.Arrays;
  * @author danie
  */
 public class Recognition extends Thread {
-    private DatagramPacket receivePacket;
-    private byte[] buffer;
-    private final MulticastSocket rede;
-    private final int PORTA = 2020;
-    private final InetAddress IP_MULTICAST = InetAddress.getByName("224.0.0.1");
     
-    public Recognition() throws IOException{
+    private final InetAddress IP_MULTICAST = InetAddress.getByName("224.0.0.1");
+    private final int PORTA = 2020;
+    
+    private DatagramPacket receivePacket;
+    private MulticastSocket rede;
+    
+    private byte[] buffer;
+    
+    private CMChannel chanel;
+    
+    
+    public Recognition(CMChannel chanel) throws IOException{
+        this.chanel = chanel;
         this.rede = new MulticastSocket(PORTA);
         this.buffer = new byte[256];
     }
@@ -53,7 +60,9 @@ public class Recognition extends Thread {
                 
                 System.out.println(Arrays.toString(info));
                 
-                //adicionar  a lista
+                if(group.equals("MyGroup")){
+                    
+                }
                 
                 
             

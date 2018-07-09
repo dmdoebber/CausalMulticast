@@ -60,7 +60,7 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setText("Gurpo:");
+        jLabel1.setText("Grupo:");
 
         join.setText("Join");
         join.addActionListener(new java.awt.event.ActionListener() {

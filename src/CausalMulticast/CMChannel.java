@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.List;
 
 /**
  *
@@ -24,6 +25,9 @@ public class CMChannel{
     private final ICausalMulticast application;
     private final Recognition recognition;
     
+    private List<String> userList;
+    private String MyGroup;
+    
     private final String MyIP = InetAddress.getLocalHost().getHostAddress();
     
     
@@ -32,13 +36,14 @@ public class CMChannel{
         rede = new MulticastSocket(PORTA);
         this.application = (ICausalMulticast) application;
         
-        recognition = new Recognition();
+        recognition = new Recognition(this);
         recognition.start();
     }
     
     public void join(String user, String dest) throws IOException{
         rede.joinGroup(IP_MIDDLEWARE); 
         
+        this.MyGroup = dest;
         String msg = "join" + "-" + user + "-" + dest;
         
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
