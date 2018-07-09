@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,10 +33,12 @@ public class CMChannel{
     
     
     public CMChannel(ICausalMulticast application) throws IOException{
-        
+       
         rede = new MulticastSocket(PORTA);
         this.application = (ICausalMulticast) application;
-        
+       
+        this.userList = new ArrayList();
+                
         recognition = new Recognition(this);
         recognition.start();
     }
