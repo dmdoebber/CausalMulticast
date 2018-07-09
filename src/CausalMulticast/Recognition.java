@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public class Recognition extends Thread {
     
-    private final InetAddress IP_MULTICAST = InetAddress.getByName("224.0.0.1");
+    private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("224.0.0.1");
     private final int PORTA = 2020;
     
     private DatagramPacket receivePacket;
@@ -38,10 +38,12 @@ public class Recognition extends Thread {
     @Override
     public void run(){
         try {
-            rede.joinGroup(IP_MULTICAST);
+            rede.joinGroup(IP_MIDDLEWARE);
         } catch (IOException ex) {
             System.out.println("Error join thread: " + ex);
         }
+        
+        DatagramPacket sendPacket;
         
         String[] info;
         String action;
@@ -64,10 +66,18 @@ public class Recognition extends Thread {
                 if(MyGroup.equalsIgnoreCase(group)){
                     switch (action) {
                         case "join":
-                            chanel.userList.add(user);                    
+                            chanel.userList.add(user); 
+                            
+                            String msg = "inGroup" + "-" + user + "-" + group + "-";
+                            sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
+                            rede.send(sendPacket);
                             break;
                         case "leave":
                             chanel.userList.remove(user);
+                            break;
+                            
+                        case "inGroup":
+                            chanel.userList.add(user); 
                             break;
                         default:
                             System.out.println("Função inválida!");
