@@ -30,6 +30,7 @@ public class Recognition extends Thread {
     public String MyGroup;
     
     public Recognition(CMChannel chanel) throws IOException{
+        this.MyGroup = "";
         this.chanel = chanel;
         this.rede = new MulticastSocket(PORTA);
     }
