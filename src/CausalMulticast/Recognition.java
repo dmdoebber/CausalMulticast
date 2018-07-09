@@ -51,7 +51,11 @@ public class Recognition extends Thread {
                 user   = info[1];
                 group  = info[2];
                 
-                System.out.println(info);
+                System.out.println(Arrays.toString(info));
+                
+                //adicionar  a lista
+                
+                
             
             }catch(IOException ex){
                 System.out.println("Error thread recognition: " + ex);
