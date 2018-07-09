@@ -76,6 +76,7 @@ public class Recognition extends Thread {
                             break;
                         case "leave":
                             chanel.userList.remove(user);
+                            this.MyGroup = "";
                             break;
                             
                         case "inGroup":
