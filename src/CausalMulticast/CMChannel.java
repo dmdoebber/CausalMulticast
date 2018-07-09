@@ -56,6 +56,7 @@ public class CMChannel{
     
     public void leave(String user, String dest) throws IOException{
         this.userList.clear();
+        recognition.MyGroup = "";
         
         String msg = "leave" + "-" + user + "-" + dest + "-";
         
