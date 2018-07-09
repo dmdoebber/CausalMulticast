@@ -78,7 +78,7 @@ public class Recognition extends Thread {
                             break;
                             
                         case "inGroup":
-                            if(!user.equals(MyIP) && chanel.userList.contains(user))
+                            if(!user.equals(MyIP) && !chanel.userList.contains(user))
                                 chanel.userList.add(user); 
                             break;
                         default:
