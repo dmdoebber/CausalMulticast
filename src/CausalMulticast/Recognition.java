@@ -79,10 +79,8 @@ public class Recognition extends Thread {
                             break;
                             
                         case "inGroup":
-                            if(!user.equals(MyIP) && !chanel.userList.contains(user)){
+                            if(!user.equals(MyIP) && !chanel.userList.contains(user))
                                 chanel.userList.add(user); 
-                                System.out.println("add "+ user);
-                            }
                             break;
                         default:
                             System.out.println("Função inválida!");

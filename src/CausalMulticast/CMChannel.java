@@ -17,8 +17,8 @@ import java.util.List;
  * @author danie
  */
 public class CMChannel{
-    private final int PORTA = 2020;
     private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("224.0.0.1");
+    private final int PORTA = 2020;
     
     private final MulticastSocket rede;
     private DatagramPacket sendPacket;
