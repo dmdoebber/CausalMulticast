@@ -66,7 +66,8 @@ public class Recognition extends Thread {
                 if(MyGroup.equalsIgnoreCase(group)){
                     switch (action) {
                         case "join":
-                            chanel.userList.add(user); 
+                            if(chanel.userList.contains(user))
+                                chanel.userList.add(user); 
                             
                             String msg = "inGroup" + "-" + user + "-" + group + "-";
                             sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
