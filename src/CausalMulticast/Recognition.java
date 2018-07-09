@@ -75,6 +75,7 @@ public class Recognition extends Thread {
                             break;
                         case "leave":
                             chanel.userList.remove(user);
+                            chanel.userList.clear();
                             break;
                             
                         case "inGroup":
