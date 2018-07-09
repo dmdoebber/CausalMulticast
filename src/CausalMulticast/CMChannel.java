@@ -7,7 +7,6 @@ package CausalMulticast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
@@ -20,7 +19,6 @@ public class CMChannel{
     private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("224.0.0.1");
     
     private final MulticastSocket rede;
-    private final DatagramSocket socket;
     private DatagramPacket sendPacket;
     
     private final ICausalMulticast application;
@@ -32,7 +30,6 @@ public class CMChannel{
     public CMChannel(ICausalMulticast application) throws IOException{
         
         rede = new MulticastSocket(PORTA);
-        socket = new DatagramSocket();
         this.application = (ICausalMulticast) application;
         
         recognition = new Recognition();
@@ -45,7 +42,7 @@ public class CMChannel{
         String msg = "join" + "-" + user + "-" + dest;
         
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
-        socket.send(sendPacket);
+        rede.send(sendPacket);
     }   
     
     public void leave(String user, String dest) throws IOException{
@@ -53,7 +50,7 @@ public class CMChannel{
         String msg = "leave" + "-" + user + "-" + dest;
         
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
-        socket.send(sendPacket);
+        rede.send(sendPacket);
         
         rede.leaveGroup(IP_MIDDLEWARE);    
     }
