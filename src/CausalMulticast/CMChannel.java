@@ -10,7 +10,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.UnknownHostException;
 
 /**
  *
@@ -40,22 +39,20 @@ public class CMChannel{
         recognition.start();
     }
     
-    public void join(String user, String dest) throws UnknownHostException, IOException{
+    public void join(String user, String dest) throws IOException{
         rede.joinGroup(IP_MIDDLEWARE); 
         
         String msg = "join" + "-" + user + "-" + dest;
+        
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
         socket.send(sendPacket);
-        
-        
     }   
     
-    public void leave(String user, String dest) throws UnknownHostException, IOException{
+    public void leave(String user, String dest) throws IOException{
         
         String msg = "leave" + "-" + user + "-" + dest;
+        
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
-        
-        
         socket.send(sendPacket);
         
         rede.leaveGroup(IP_MIDDLEWARE);    
@@ -63,11 +60,5 @@ public class CMChannel{
     
     public void mcSend(String msg, String dest) throws IOException{
        this.application.deliver(MyIP, msg); //mudar
-       
-       sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
-        
-       socket.send(sendPacket);
-      
-        
     }
 }

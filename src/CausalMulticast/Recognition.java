@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.Arrays;
 
 /**
  *
@@ -33,13 +34,22 @@ public class Recognition extends Thread {
         } catch (IOException ex) {
             System.out.println("Error join thread: " + ex);
         }
+        
+        String[] info;
+        String action;
+        String user;
+        String group;
+        
         while(true){
             try{
+                
                 receivePacket = new DatagramPacket(buffer, buffer.length);
                 rede.receive(receivePacket);
-                buffer[0] = '\0';
                 
-                System.out.println(new String(buffer, 0) +" "+ buffer.length);
+                info   = new String(buffer).split("-"); 
+                action = info[0];
+                user   = info[1];
+                group  = info[2];
             
             }catch(IOException ex){
                 System.out.println("Error thread recognition: " + ex);
