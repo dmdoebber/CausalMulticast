@@ -25,7 +25,7 @@ public class CMChannel{
     private final ICausalMulticast application;
     private final Recognition recognition;
     
-    private List<String> userList;
+    public List<String> userList;
     
     
     private final String MyIP = InetAddress.getLocalHost().getHostAddress();
@@ -45,7 +45,7 @@ public class CMChannel{
         
         this.recognition.MyGroup = dest;
         
-        String msg = "join" + "-" + user + "-" + dest;
+        String msg = "join" + "-" + user + "-" + dest + "-";
         
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
         rede.send(sendPacket);
@@ -53,7 +53,7 @@ public class CMChannel{
     
     public void leave(String user, String dest) throws IOException{
         
-        String msg = "leave" + "-" + user + "-" + dest;
+        String msg = "leave" + "-" + user + "-" + dest + "-";
         
         sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
         rede.send(sendPacket);

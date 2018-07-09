@@ -26,6 +26,7 @@ public class Recognition extends Thread {
     private byte[] buffer;
     
     private CMChannel chanel;
+    
     public String MyGroup;
     
     public Recognition(CMChannel chanel) throws IOException{
@@ -59,13 +60,21 @@ public class Recognition extends Thread {
                 
                 System.out.println(Arrays.toString(info));
                 
-                if(group.equals(MyGroup)){
-                    System.out.println("entrou no meu grupo");
-                    
+                if(MyGroup.equalsIgnoreCase(group)){
+                    switch (action) {
+                        case "join":
+                            chanel.userList.add(user);                    
+                            break;
+                        case "leave":
+                            chanel.userList.remove(user);
+                            break;
+                        default:
+                            System.out.println("Função inválida!");
+                            break;
+                    }
                 }
                 
-                
-            
+                System.out.println(chanel.userList);
             }catch(IOException ex){
                 System.out.println("Error thread recognition: " + ex);
             }   
