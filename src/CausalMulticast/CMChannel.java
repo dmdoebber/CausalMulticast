@@ -32,14 +32,11 @@ public class CMChannel{
     
     public CMChannel(ICausalMulticast application) throws IOException{
         
-        
         rede = new MulticastSocket(PORTA);
         socket = new DatagramSocket();
         this.application = (ICausalMulticast) application;
         
-        rede.setBroadcast(true);
-        
-        recognition = new Recognition(rede);
+        recognition = new Recognition();
         recognition.start();
     }
     
