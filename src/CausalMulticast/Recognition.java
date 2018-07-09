@@ -69,7 +69,7 @@ public class Recognition extends Thread {
                         case "join":
                             chanel.userList.add(user); 
                             
-                            String msg = "inGroup" + "-" + user + "-" + group + "-";
+                            String msg = "inGroup" + "-" + MyIP + "-" + group + "-";
                             sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
                             rede.send(sendPacket);
                             break;
@@ -78,8 +78,10 @@ public class Recognition extends Thread {
                             break;
                             
                         case "inGroup":
-                            if(!user.equals(MyIP) && !chanel.userList.contains(user))
+                            if(!user.equals(MyIP) && !chanel.userList.contains(user)){
                                 chanel.userList.add(user); 
+                                System.out.println("add "+ user);
+                            }
                             break;
                         default:
                             System.out.println("Função inválida!");
