@@ -50,6 +50,8 @@ public class Recognition extends Thread {
                 action = info[0];
                 user   = info[1];
                 group  = info[2];
+                
+                System.out.println(info);
             
             }catch(IOException ex){
                 System.out.println("Error thread recognition: " + ex);
