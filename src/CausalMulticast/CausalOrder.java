@@ -100,8 +100,23 @@ public class CausalOrder {
     public void ordenar_mensagem_Receive(Message message) {
         this.Messages.add(message);
         
+        System.out.println("vetor do cara");
+        for(Map.Entry m  : vectorClock.entrySet()){
+            String ip = (String) m.getKey();
+            int clock = (int) m.getValue();   
+            System.out.println(ip + " [" + clock + "]");
+        }
+                
         if(!message.user.equals(this.IP)){
-            this.somar_Relogio();     
+            Iterator myVector = vectorClock.entrySet().iterator();
+
+            while(myVector.hasNext()){
+                Map.Entry m = (Map.Entry) myVector.next();
+                if(m.getKey().equals(message.user)){
+                    int clock =  (int) m.getValue();
+                    vectorClock.replace(IP, clock + 1);
+                }
+            }      
         }
         
         // Chama metodo que verifica se o buffer tem mensagens a serem entregues

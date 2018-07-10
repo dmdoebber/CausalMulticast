@@ -91,9 +91,7 @@ public class CMChannel{
         for(int i = 0; i < userList.size(); i++){
             IP = InetAddress.getByName(userList.get(i));
             message = new Message(MyIP, msg);
-            
             message.vectorClock = causalOrder.get_Relogio();
-            
             
             message.toString();
             
