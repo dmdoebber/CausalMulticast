@@ -36,8 +36,11 @@ public class Recognition extends Thread {
         this.rede = new MulticastSocket(PORTA);
     }
 
+    /**
+     *
+     */
     @Override
-    public void run(){
+    public synchronized void run(){
         try {
             rede.joinGroup(IP_MIDDLEWARE);
         } catch (IOException ex) {

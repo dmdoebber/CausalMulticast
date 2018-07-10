@@ -15,15 +15,16 @@ import java.util.List;
  * @author chico
  */
 public class CausalOrder {
-    public List<String> MessageBuffer;
+    public List<Message> MessageBuffer;
+    private ICausalMulticast application;
     
     
-    public CausalOrder(){
-        
+    public CausalOrder(ICausalMulticast application){
+        this.application = application;
     }
     
     
     private void MessageToGUI(){
-        
+        //application.deliver(user, msg);
     } 
 }

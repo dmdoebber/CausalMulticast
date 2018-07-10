@@ -83,7 +83,7 @@ public class CMChannel{
         
         for(int i = 0; i < userList.size(); i++){
             IP = InetAddress.getByName(userList.get(i));
-            message = new Message(msg, dest, null); //null = vectorClock
+            message = new Message(msg, dest); //null = vectorClock
             
             message.toString();
             
