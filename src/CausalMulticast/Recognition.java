@@ -53,6 +53,7 @@ public class Recognition extends Thread {
         String action;
         String user;
         String group;
+        String MyID;
         
         while(true){
             try{
@@ -64,14 +65,17 @@ public class Recognition extends Thread {
                 action = info[0];
                 user   = info[1];
                 group  = info[2];
+                MyID   = info[3]; 
                 
                 System.out.println(Arrays.toString(info));
                 
                 if(MyGroup.equalsIgnoreCase(group)){
                     switch (action) {
                         case "join":
-                            if(!chanel.userList.contains(user))
+                            if(!chanel.userList.contains(user)){
                                 chanel.userList.add(user); 
+                                chanel.causalOrder.AddUserTOClock(user);
+                            }
                             
                             String msg = "inGroup" + "-" + MyIP + "-" + group + "-";
                             sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
@@ -79,11 +83,15 @@ public class Recognition extends Thread {
                             break;
                         case "leave":
                             chanel.userList.remove(user);
+                            //chanel.causalOrder.removeUserClock(user);
                             break;
                             
                         case "inGroup":
-                            if(!user.equals(MyIP) && !chanel.userList.contains(user))
+                            if(!user.equals(MyIP) && !chanel.userList.contains(user)){
                                 chanel.userList.add(user); 
+                                chanel.causalOrder.AddUserTOClock(user);
+                            }
+                                
                             break;
                         default:
                             System.out.println("Função inválida!");

@@ -25,6 +25,6 @@ public class Message implements Serializable{
     
     @Override
     public String toString(){
-        return Message + " " + "clock";
+        return Message;
     }
 }

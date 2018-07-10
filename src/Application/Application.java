@@ -172,8 +172,6 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
             if(dest.equals("")) return;
                 
             this.canal.join(user, dest);
-                
-            
             
             this.join.setEnabled(false);
             this.nameGroup.setEditable(false);

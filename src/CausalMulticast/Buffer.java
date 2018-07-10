@@ -5,6 +5,8 @@
  */
 package CausalMulticast;
 
+import java.util.Map;
+
 /**
  *
  * @author xico
@@ -12,9 +14,8 @@ package CausalMulticast;
 public class Buffer {
     private String mensagem;
     private String user;
-    private int id;
     private boolean entregue;
-    private Integer[] vetorRecebido;
+    private Map<String, Integer> vetorRecebido;
 
     /**
      * @return the mensagem
@@ -31,31 +32,17 @@ public class Buffer {
     }
 
     /**
-     * @return the user
+     * @return the id
      */
     public String getUser() {
         return user;
     }
 
     /**
-     * @param user the user to set
-     */
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
      * @param id the id to set
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setUser(String id) {
+        this.user = id;
     }
 
     /**
@@ -75,32 +62,14 @@ public class Buffer {
     /**
      * @return the vetorRecebido
      */
-    public Integer[] getVetorRecebido() {
+    public  Map<String, Integer> getVetorRecebido() {
         return vetorRecebido;
     }
 
     /**
      * @param vetorRecebido the vetorRecebido to set
      */
-    public void setVetorRecebido(Integer[] vetorRecebido) {
+    public void setVetorRecebido(Map<String, Integer> vetorRecebido) {
         this.vetorRecebido = vetorRecebido;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

@@ -34,8 +34,11 @@ public class CMChannel{
     
     public List<String> userList;
     
+    public CausalOrder causalOrder;
+    
     
     private final String MyIP = InetAddress.getLocalHost().getHostAddress();
+    public int MyID;
     
     
     public CMChannel(ICausalMulticast application) throws IOException{
@@ -51,11 +54,13 @@ public class CMChannel{
         
         receiver = new Receiver(socket);
         receiver.start();
+        
+        causalOrder = new CausalOrder(application);
     }
     
     public void join(String user, String dest) throws IOException{
         rede.joinGroup(IP_MIDDLEWARE); 
-        
+         
         this.recognition.MyGroup = dest;
         
         String msg = "join" + "-" + user + "-" + dest + "-";
@@ -83,7 +88,7 @@ public class CMChannel{
         
         for(int i = 0; i < userList.size(); i++){
             IP = InetAddress.getByName(userList.get(i));
-            message = new Message(msg, dest); //null = vectorClock
+            message = new Message(msg, dest);
             
             message.toString();
             
