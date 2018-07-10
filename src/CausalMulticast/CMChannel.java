@@ -20,7 +20,7 @@ import java.util.List;
  * @author danie
  */
 public class CMChannel{
-    private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("224.0.0.1");
+    private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("230.0.0.1");
     private final int PORT_MIDDLEWARE = 2020;
     private final int PORT_MESSAGE = 3030;
     

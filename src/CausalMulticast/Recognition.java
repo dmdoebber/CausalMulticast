@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public class Recognition extends Thread {
     
-    private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("224.0.0.1");
+    private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("230.0.0.1");
     private final int PORTA = 2020;
     
     private DatagramPacket receivePacket;
