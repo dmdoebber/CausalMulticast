@@ -5,8 +5,11 @@
  */
 package CausalMulticast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.ArrayList;
@@ -18,13 +21,16 @@ import java.util.List;
  */
 public class CMChannel{
     private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("224.0.0.1");
-    private final int PORTA = 2020;
+    private final int PORT_MIDDLEWARE = 2020;
+    private final int PORT_MESSAGE = 3030;
     
+    private final DatagramSocket socket;
     private final MulticastSocket rede;
     private DatagramPacket sendPacket;
     
     private final ICausalMulticast application;
     private final Recognition recognition;
+    private final Receiver receiver;
     
     public List<String> userList;
     
@@ -34,13 +40,17 @@ public class CMChannel{
     
     public CMChannel(ICausalMulticast application) throws IOException{
        
-        rede = new MulticastSocket(PORTA);
+        rede = new MulticastSocket(PORT_MIDDLEWARE);
+        socket = new DatagramSocket(PORT_MESSAGE);
+        
         this.application = (ICausalMulticast) application;
-       
         this.userList = new ArrayList();
                 
         recognition = new Recognition(this);
         recognition.start();
+        
+        receiver = new Receiver(socket);
+        receiver.start();
     }
     
     public void join(String user, String dest) throws IOException{
@@ -50,7 +60,7 @@ public class CMChannel{
         
         String msg = "join" + "-" + user + "-" + dest + "-";
         
-        sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
+        sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORT_MIDDLEWARE);
         rede.send(sendPacket);
     }   
     
@@ -60,13 +70,32 @@ public class CMChannel{
         
         String msg = "leave" + "-" + user + "-" + dest + "-";
         
-        sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
+        sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORT_MIDDLEWARE);
         rede.send(sendPacket);
         
         rede.leaveGroup(IP_MIDDLEWARE);    
     }
     
     public void mcSend(String msg, String dest) throws IOException{
-       this.application.deliver(MyIP, msg); //mudar
+        InetAddress IP;
+        Message message;
+        
+        
+        for(int i = 0; i < userList.size(); i++){
+            IP = InetAddress.getByName(userList.get(i));
+            message = new Message(msg, dest, null); //null = vectorClock
+            
+            message.toString();
+            
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            
+            oos.writeObject(message);
+            
+            byte[] data = baos.toByteArray();
+            
+            sendPacket = new DatagramPacket(data, data.length, IP, PORT_MESSAGE);
+            socket.send(sendPacket);
+        }
     }
 }
