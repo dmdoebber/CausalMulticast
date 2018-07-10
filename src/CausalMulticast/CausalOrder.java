@@ -114,7 +114,7 @@ public class CausalOrder {
                 Map.Entry m = (Map.Entry) myVector.next();
                 if(m.getKey().equals(message.user)){
                     int clock =  (int) m.getValue();
-                    vectorClock.replace(IP, clock + 1);
+                    vectorClock.replace(message.user, clock + 1);
                 }
             }      
         }
