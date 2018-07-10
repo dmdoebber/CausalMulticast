@@ -86,9 +86,19 @@ public class CMChannel{
         InetAddress IP;
         Message message;
         
-        String s = JOptionPane.showInputDialog("DIgite");
+        String stringFail = JOptionPane.showInputDialog("Digite o numero do usuario para não enviar!", -1);
+        
+        int fail = Integer.parseInt(stringFail);
+        String IPFail = "";
+        
+        if(fail <= userList.size() && fail > 0)
+            IPFail = userList.get(fail);
         
         for(int i = 0; i < userList.size(); i++){
+            
+            if(IPFail.equals(userList.get(i))) continue;
+            System.out.println("aqui "+IPFail + " "+ userList.get(i));
+            
             IP = InetAddress.getByName(userList.get(i));
             message = new Message(MyIP, msg);
             message.vectorClock = causalOrder.get_Relogio();
@@ -107,8 +117,5 @@ public class CMChannel{
         }
         
         this.causalOrder.somar_Relogio();
-        System.out.println("MEU VETOR SOMADO");
-        this.causalOrder.imprimir_Vetor();
-        
     }
 }

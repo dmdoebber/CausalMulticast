@@ -211,8 +211,8 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         
         if(msg.equals("")) return;
         
-        this.buffer.add(msg);
-        this.listBuffer.addElement(msg);
+        //this.buffer.add(msg);
+        //this.listBuffer.addElement(msg);
         
         this.canal.mcSend(msg, dest);
         

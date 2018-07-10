@@ -83,7 +83,7 @@ public class Recognition extends Thread {
                             break;
                         case "leave":
                             chanel.userList.remove(user);
-                            //chanel.causalOrder.removeUserClock(user);
+                            //chanel.causalOrder.RemoveUserTOClock(user);
                             break;
                             
                         case "inGroup":

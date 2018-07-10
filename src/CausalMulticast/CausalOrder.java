@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class CausalOrder {
     private Map<String, Integer> vectorClock;
-    private String IP;
+    private final String IP;
     private ArrayList<Message> Messages;
     private final ICausalMulticast application;
     
@@ -108,20 +108,10 @@ public class CausalOrder {
                 Map.Entry m = (Map.Entry) myVector.next();
                 if(m.getKey().equals(message.user)){
                     int clock =  (int) m.getValue();
-                    System.out.println("clock"+clock);
                     vectorClock.replace(message.user, clock + 1);
-                    
                 }
             }      
         }
-        
-        System.out.println("MEU VETOR");
-        for(Map.Entry m  : vectorClock.entrySet()){
-            String ip = (String) m.getKey();
-            int clock = (int) m.getValue();   
-            System.out.println(ip + " [" + clock + "]");
-        }
-        
         
         // Chama metodo que verifica se o buffer tem mensagens a serem entregues
         this.ver_entrega_Buffer();
@@ -130,7 +120,6 @@ public class CausalOrder {
     /*     Metodo para somar mais um ao relogio no id atual  */
     public void somar_Relogio() {
         Iterator myVector = vectorClock.entrySet().iterator();
-        System.out.println("meu ip"+IP);
         while(myVector.hasNext()){
             Map.Entry m = (Map.Entry) myVector.next();
             if(m.getKey().equals(IP)){
