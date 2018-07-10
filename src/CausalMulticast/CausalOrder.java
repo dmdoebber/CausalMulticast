@@ -41,7 +41,7 @@ public class CausalOrder {
     
     
     /* metodo para atualizar o vetor quando é recebido algum valor*/
-    private void atualiza_Relogio(Integer[] vetor_Recebido) {
+    private void atualiza_Relogio_no_Receive(Integer[] vetor_Recebido) {
         for(int i = 0; i < Vetor_rel.length; i++) {
             if(i != this.Id) {
                 this.Vetor_rel[i] = Math.max(this.Vetor_rel[i], vetor_Recebido[i]);
@@ -52,13 +52,12 @@ public class CausalOrder {
     
     /* metodo para verificar se é possível trocar os valores do vetor*/
      private boolean verificar_Relogio(Integer[] vetor_Recebido, int id_Recebido) {
-        for(int i= 0; i < vetor_Recebido.length; i++) {
+        for(int i = 0; i < vetor_Recebido.length; i++) {
             if(i != id_Recebido) {
                 if(vetor_Recebido[i] > this.Vetor_rel[i])
                     return false;
             }
         }
-        
         return true;
     }
     
@@ -66,7 +65,7 @@ public class CausalOrder {
     
      /*  Metodo que analisa se as mensagens do buffer podem ser entregues ao destinatario  */
     private void ver_entrega_Buffer() {
-        for(int i=this.Mensagens.size()-1;i>=0;i--){
+        for(int i = this.Mensagens.size()-1; i >= 0 ;i--){
             Buffer b = this.Mensagens.get(i);
             
             //verifica se a mensagem pode mas ainda nao foi entregue
@@ -84,7 +83,7 @@ public class CausalOrder {
     /*
         Ordena as mensagens de acordo com a ordem causal
     */
-    public void ordenarMensagem(String mensagem ,String remetente, int id_Recebido, Integer[] vetorRecebido) {
+    public void ordenar_mensagem_Receive(String mensagem ,String remetente, int id_Recebido, Integer[] vetorRecebido) {
         // Salva mensagem no buffer
         Buffer b = new Buffer();
         b.setMsg(mensagem);
@@ -103,20 +102,8 @@ public class CausalOrder {
         this.ver_entrega_Buffer();
     }
      
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-    
-    
     /*     Metodo para somar mais um ao relogio no id atual  */
-    public void atualizar_Relogio() {
+    public void somar_Relogio() {
          this.Vetor_rel[this.Id]++;     
     }
     
