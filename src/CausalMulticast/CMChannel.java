@@ -50,7 +50,7 @@ public class CMChannel{
         this.application = (ICausalMulticast) application;
         this.userList = new ArrayList();
                 
-        causalOrder = new CausalOrder(application);
+        causalOrder = new CausalOrder(application, MyIP);
         
         recognition = new Recognition(this);
         recognition.start();
@@ -107,5 +107,8 @@ public class CMChannel{
         }
         
         this.causalOrder.somar_Relogio();
+        System.out.println("MEU VETOR SOMADO");
+        this.causalOrder.imprimir_Vetor();
+        
     }
 }

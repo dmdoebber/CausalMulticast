@@ -21,14 +21,15 @@ public class CausalOrder {
     private final ICausalMulticast application;
     
     /* construtor da classe */
-    public CausalOrder(ICausalMulticast application ){
+    public CausalOrder(ICausalMulticast application, String IP){
+        this.IP = IP;
         this.Messages = new ArrayList();
         this.application =  application;
         this.vectorClock = new HashMap();
     }
     /* metodo para inicializar vetor com 0 */
     public void AddUserTOClock(String IP){
-        this.IP = IP;
+
         vectorClock.put(IP, 0);
         this.imprimir_Vetor();
     }
@@ -100,13 +101,6 @@ public class CausalOrder {
     public void ordenar_mensagem_Receive(Message message) {
         this.Messages.add(message);
         
-        System.out.println("vetor do cara");
-        for(Map.Entry m  : vectorClock.entrySet()){
-            String ip = (String) m.getKey();
-            int clock = (int) m.getValue();   
-            System.out.println(ip + " [" + clock + "]");
-        }
-                
         if(!message.user.equals(this.IP)){
             Iterator myVector = vectorClock.entrySet().iterator();
 
@@ -114,10 +108,20 @@ public class CausalOrder {
                 Map.Entry m = (Map.Entry) myVector.next();
                 if(m.getKey().equals(message.user)){
                     int clock =  (int) m.getValue();
+                    System.out.println("clock"+clock);
                     vectorClock.replace(message.user, clock + 1);
+                    
                 }
             }      
         }
+        
+        System.out.println("MEU VETOR");
+        for(Map.Entry m  : vectorClock.entrySet()){
+            String ip = (String) m.getKey();
+            int clock = (int) m.getValue();   
+            System.out.println(ip + " [" + clock + "]");
+        }
+        
         
         // Chama metodo que verifica se o buffer tem mensagens a serem entregues
         this.ver_entrega_Buffer();
@@ -126,7 +130,7 @@ public class CausalOrder {
     /*     Metodo para somar mais um ao relogio no id atual  */
     public void somar_Relogio() {
         Iterator myVector = vectorClock.entrySet().iterator();
-
+        System.out.println("meu ip"+IP);
         while(myVector.hasNext()){
             Map.Entry m = (Map.Entry) myVector.next();
             if(m.getKey().equals(IP)){
