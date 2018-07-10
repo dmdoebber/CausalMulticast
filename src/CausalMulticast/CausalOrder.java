@@ -67,12 +67,10 @@ public class CausalOrder {
                 String m = b.getUser() + ": " + b.getMensagem()+ "\n";
                
                 //mostrar na tela daniel
-               // this.application.getjTextAreaMensagens().append(m);
+               this.application.deliver(m);
             } 
         }
     }
-    
-    
     /*
         Ordena as mensagens de acordo com a ordem causal
     */

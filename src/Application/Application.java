@@ -38,8 +38,8 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
     }  
     
     @Override
-    public void deliver(String user, String msg) {
-        this.txtArea.append(user + "[time]: " + msg + "\n");
+    public void deliver(String msg) {
+        this.txtArea.append(msg + "\n");
     }
 
     @SuppressWarnings("unchecked")

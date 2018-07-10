@@ -13,8 +13,7 @@ public interface ICausalMulticast {
     
     /**
      *
-     * @param user usuario que está enviando a mensagem 
      * @param msg mensagem enviada pelo usuario
      */
-    public void deliver(String user, String msg);
+    public void deliver(String msg);
 }
