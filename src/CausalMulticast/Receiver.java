@@ -5,7 +5,9 @@
  */
 package CausalMulticast;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -21,9 +23,9 @@ public class Receiver extends Thread{
     private DatagramPacket receivePacket;
     private byte[] receiveData;
     
-    public Receiver() throws SocketException{
-        serverSocket = new DatagramSocket(PORTA);
-        
+    public Receiver(DatagramSocket serverSocket) throws SocketException{
+        this.serverSocket = serverSocket;
+        receiveData = new byte[1024];
     }
     
     @Override
@@ -34,8 +36,19 @@ public class Receiver extends Thread{
             
                 receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 serverSocket.receive(receivePacket);
-         
-            } catch (IOException ex) {
+                
+                byte[] data = receivePacket.getData();
+                
+                ByteArrayInputStream bais = new ByteArrayInputStream(data);
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                
+                Message message = (Message) ois.readObject();
+                
+                System.out.println(message);
+
+                //adicionar a lista de mensagens recebidas
+
+            } catch (IOException | ClassNotFoundException ex) {
                 System.out.println("Error thread receiver " + ex);
             }
         }
