@@ -17,12 +17,12 @@ import java.util.Map;
 public class CausalOrder {
     private Map<String, Integer> vectorClock;
     private String IP;
-    private ArrayList<Buffer> Mensagens;
+    private ArrayList<Message> Messages;
     private final ICausalMulticast application;
     
     /* construtor da classe */
     public CausalOrder(ICausalMulticast application ){
-        this.Mensagens = new ArrayList();
+        this.Messages = new ArrayList();
         this.application =  application;
         this.vectorClock = new HashMap();
     }
@@ -30,6 +30,7 @@ public class CausalOrder {
     public void AddUserTOClock(String IP){
         this.IP = IP;
         vectorClock.put(IP, 0);
+        this.imprimir_Vetor();
     }
     
     public void RemoveUserTOClock(){
@@ -80,13 +81,13 @@ public class CausalOrder {
     
      /*  Metodo que analisa se as mensagens do buffer podem ser entregues ao destinatario  */
     private void ver_entrega_Buffer() {
-        for(int i = this.Mensagens.size()-1; i >= 0 ;i--){
-            Buffer b = this.Mensagens.get(i);
+        for(int i = this.Messages.size()-1; i >= 0 ;i--){
+            Message message = this.Messages.get(i);
             
             //verifica se a mensagem pode mas ainda nao foi entregue
-            if(this.verificar_Relogio(b.getVetorRecebido(),b.getUser()) && !b.isEntregue()) {
-                b.setEntregue(true);
-                String m = b.getUser() + ": " + b.getMensagem()+ "\n";
+            if(this.verificar_Relogio(message.vectorClock, message.user) && !message.delivery) {
+                message.delivery = true;
+                String m = message.user + ": " + message.Message;
                
                 //mostrar na tela daniel
                this.application.deliver(m);
@@ -96,15 +97,10 @@ public class CausalOrder {
     /*
         Ordena as mensagens de acordo com a ordem causal
     */
-    public void ordenar_mensagem_Receive(String msg ,String user, HashMap<String, Integer> vetorRecebido) {
-        Buffer b = new Buffer();
-        b.setMensagem(msg);
-        b.setUser(user);
-        b.setEntregue(false);
-        b.setVetorRecebido(vetorRecebido);
-        this.Mensagens.add(b);
+    public void ordenar_mensagem_Receive(Message message) {
+        this.Messages.add(message);
         
-        if(!user.equals(this.IP)){
+        if(!message.user.equals(this.IP)){
             this.somar_Relogio();     
         }
         
@@ -123,6 +119,7 @@ public class CausalOrder {
                 vectorClock.replace(IP, clock + 1);
             }
         }  
+        this.imprimir_Vetor();
     }
     
     /*  Metodo para retornar os valores do relogio    */ 

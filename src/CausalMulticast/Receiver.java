@@ -22,10 +22,11 @@ public class Receiver extends Thread{
     private final DatagramSocket serverSocket;
     private DatagramPacket receivePacket;
     private byte[] receiveData;
+    private CausalOrder causalOrder;
     
-    public Receiver(DatagramSocket serverSocket) throws SocketException{
+    public Receiver(DatagramSocket serverSocket, CausalOrder causalOrder) throws SocketException{
         this.serverSocket = serverSocket;
-        receiveData = new byte[1024];
+        this.causalOrder = causalOrder;     
     }
     
     @Override
@@ -33,7 +34,7 @@ public class Receiver extends Thread{
         
         while(true){
             try {
-            
+                receiveData = new byte[1024];
                 receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 serverSocket.receive(receivePacket);
                 
@@ -43,6 +44,8 @@ public class Receiver extends Thread{
                 ObjectInputStream ois = new ObjectInputStream(bais);
                 
                 Message message = (Message) ois.readObject();
+                
+                causalOrder.ordenar_mensagem_Receive(message);
                 
                 System.out.println(message);
 

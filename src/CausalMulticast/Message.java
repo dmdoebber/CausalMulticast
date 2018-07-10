@@ -14,14 +14,15 @@ import java.util.Map;
  */
 public class Message implements Serializable{
     public Map<String, Integer> vectorClock;
+    public boolean delivery;
     public String Message;
-    public String Group;
+    public String user;
     
-    public Message(String Message, String Group){
+    public Message(String user, String Message){
+        this.delivery = false;
         this.Message = Message;
-        this.Group = Group;
+        this.user = user;
     }
-    
     
     @Override
     public String toString(){

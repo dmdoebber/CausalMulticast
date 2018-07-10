@@ -14,6 +14,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -49,13 +50,13 @@ public class CMChannel{
         this.application = (ICausalMulticast) application;
         this.userList = new ArrayList();
                 
+        causalOrder = new CausalOrder(application);
+        
         recognition = new Recognition(this);
         recognition.start();
         
-        receiver = new Receiver(socket);
+        receiver = new Receiver(socket, causalOrder);
         receiver.start();
-        
-        causalOrder = new CausalOrder(application);
     }
     
     public void join(String user, String dest) throws IOException{
@@ -85,10 +86,14 @@ public class CMChannel{
         InetAddress IP;
         Message message;
         
+        String s = JOptionPane.showInputDialog("DIgite");
         
         for(int i = 0; i < userList.size(); i++){
             IP = InetAddress.getByName(userList.get(i));
-            message = new Message(msg, dest);
+            message = new Message(MyIP, msg);
+            
+            message.vectorClock = causalOrder.get_Relogio();
+            
             
             message.toString();
             
@@ -102,5 +107,7 @@ public class CMChannel{
             sendPacket = new DatagramPacket(data, data.length, IP, PORT_MESSAGE);
             socket.send(sendPacket);
         }
+        
+        this.causalOrder.somar_Relogio();
     }
 }
