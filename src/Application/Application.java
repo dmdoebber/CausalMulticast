@@ -34,8 +34,7 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         this.canal = new CMChannel(this);
         
         this.jListBuffer.setModel(listBuffer);
-        
-        this.setBackground(Color.CYAN);
+        jPanel1.setBackground(Color.CYAN);
     }  
     
     @Override
