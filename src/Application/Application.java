@@ -7,6 +7,7 @@ package Application;
 
 import CausalMulticast.*;
 import CausalMulticast.ICausalMulticast;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -33,6 +34,8 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         this.canal = new CMChannel(this);
         
         this.jListBuffer.setModel(listBuffer);
+        
+        this.setBackground(Color.CYAN);
     }  
     
     @Override
