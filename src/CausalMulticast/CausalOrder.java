@@ -61,22 +61,14 @@ public class CausalOrder {
     
     /* metodo para verificar se é possível trocar os valores do vetor*/
      private boolean verificar_Relogio(Map<String, Integer> receiveClock, String ipReceive) {
-        Iterator myVector = vectorClock.entrySet().iterator();
-        Iterator receiveVector = receiveClock.entrySet().iterator();
-        
-        while(myVector.hasNext() && receiveVector.hasNext()){
-            Map.Entry m = (Map.Entry) myVector.next();
-            Map.Entry r = (Map.Entry) receiveVector.next();
-            
-            String id = (String) r.getKey();
-                 
-            if(!id.equals(ipReceive)){
-                int clock1 = (int) m.getValue();
-                int clock2 = (int) r.getValue();
+        for ( String key : receiveClock.keySet() ) {
+            System.out.println( key );
+            int clock1 = (int) this.vectorClock.get(key);
+            int clock2 = (int) receiveClock.get(key);
                 if(clock2 > clock1)
                     return false;       
-            }
-        }
+           
+        }       
         return true;
     }
     
@@ -100,6 +92,9 @@ public class CausalOrder {
     */
     public void ordenar_mensagem_Receive(Message message) {
         this.Messages.add(message);
+       
+         // Chama metodo que verifica se o buffer tem mensagens a serem entregues
+        this.ver_entrega_Buffer();
         
         if(!message.user.equals(this.IP)){
             Iterator myVector = vectorClock.entrySet().iterator();
@@ -113,8 +108,7 @@ public class CausalOrder {
             }      
         }
         
-        // Chama metodo que verifica se o buffer tem mensagens a serem entregues
-        this.ver_entrega_Buffer();
+       
     }
      
     /*     Metodo para somar mais um ao relogio no id atual  */
