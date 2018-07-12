@@ -65,8 +65,8 @@ public class CausalOrder {
             System.out.println( key );
             int clock1 = (int) this.vectorClock.get(key);
             int clock2 = (int) receiveClock.get(key);
-                if(clock2 <= clock1)
-                    return false;       
+            if(clock2 <= clock1)
+                return false;       
            
         }       
         return true;
