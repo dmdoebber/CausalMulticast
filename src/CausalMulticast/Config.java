@@ -5,12 +5,14 @@
  */
 package CausalMulticast;
 
-import java.net.InetAddress;
 
 /**
  *
  * @author danie
  */
 public class Config {
+    private static final String IP_MIDDLEWARE = "230.0.0.1";
+    private static final Integer PORT_MIDDLEWARE = 2020;
+    private static final Integer PORT_MESSAGE = 3030;
  
 }

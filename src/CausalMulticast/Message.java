@@ -18,10 +18,11 @@ public class Message implements Serializable{
     public String Message;
     public String user;
     
-    public Message(String user, String Message){
-        this.delivery = false;
+    public Message(String user, String Message, Map<String, Integer> vectorClock){
+        this.vectorClock = vectorClock;
         this.Message = Message;
         this.user = user;
+        this.delivery = false;
     }
     
     @Override

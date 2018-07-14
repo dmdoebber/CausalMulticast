@@ -17,12 +17,10 @@ import java.net.SocketException;
  * @author danie
  */
 public class Receiver extends Thread{
-    private final int PORTA = 3030;
-    
     private final DatagramSocket serverSocket;
     private DatagramPacket receivePacket;
     private byte[] receiveData;
-    private CausalOrder causalOrder;
+    private final CausalOrder causalOrder;
     
     public Receiver(DatagramSocket serverSocket, CausalOrder causalOrder) throws SocketException{
         this.serverSocket = serverSocket;
@@ -31,7 +29,6 @@ public class Receiver extends Thread{
     
     @Override
     public void run(){
-        
         while(true){
             try {
                 receiveData = new byte[1024];

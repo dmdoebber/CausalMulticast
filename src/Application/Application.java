@@ -84,6 +84,11 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         txtArea.setRows(5);
         jScrollPane1.setViewportView(txtArea);
 
+        jListBuffer.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "não tem metodo", "pra pegar", "o buffer" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
         jScrollPane2.setViewportView(jListBuffer);
 
         textSend.setEnabled(false);
@@ -210,9 +215,6 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         String dest = nameGroup.getText();
         
         if(msg.equals("")) return;
-        
-        //this.buffer.add(msg);
-        //this.listBuffer.addElement(msg);
         
         this.canal.mcSend(msg, dest);
         

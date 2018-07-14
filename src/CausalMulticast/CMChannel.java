@@ -29,26 +29,19 @@ public class CMChannel{
     private final MulticastSocket rede;
     private DatagramPacket sendPacket;
     
-    private final ICausalMulticast application;
     private final Recognition recognition;
     private final Receiver receiver;
     
     public List<String> userList;
-    
     public CausalOrder causalOrder;
     
-    
     private final String MyIP = InetAddress.getLocalHost().getHostAddress();
-    public int MyID;
-    
-    
-    public CMChannel(ICausalMulticast application) throws IOException{
-       
+        
+    public CMChannel(ICausalMulticast application) throws IOException{       
         rede = new MulticastSocket(PORT_MIDDLEWARE);
         socket = new DatagramSocket(PORT_MESSAGE);
         
-        this.application = (ICausalMulticast) application;
-        this.userList = new ArrayList();
+        userList = new ArrayList();
                 
         causalOrder = new CausalOrder(application, MyIP);
         
@@ -71,8 +64,8 @@ public class CMChannel{
     }   
     
     public void leave(String user, String dest) throws IOException{
-        this.userList.clear();
         recognition.MyGroup = "";
+        this.userList.clear();        
         
         String msg = "leave" + "-" + user + "-" + dest + "-";
         
@@ -96,22 +89,16 @@ public class CMChannel{
         
         for(int i = 0; i < userList.size(); i++){
             
-            if(IPFail.equals(userList.get(i))) continue;
-            System.out.println("aqui "+IPFail + " "+ userList.get(i));
+            //if(IPFail.equals(userList.get(i))) continue; arrumar ainda, lista de mensagens não enviadas
             
-            IP = InetAddress.getByName(userList.get(i));
-            message = new Message(MyIP, msg);
-            message.vectorClock = causalOrder.get_Relogio();
-            
-            message.toString();
+            message = new Message(MyIP, msg, causalOrder.getClock());            
             
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(baos);
-            
             oos.writeObject(message);
-            
             byte[] data = baos.toByteArray();
             
+            IP = InetAddress.getByName(userList.get(i));
             sendPacket = new DatagramPacket(data, data.length, IP, PORT_MESSAGE);
             socket.send(sendPacket);
         }

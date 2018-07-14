@@ -9,14 +9,12 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.util.Arrays;
 
 /**
  *
  * @author danie
  */
 public class Recognition extends Thread {
-    
     private final InetAddress IP_MIDDLEWARE = InetAddress.getByName("230.0.0.1");
     private final int PORTA = 2020;
     
@@ -25,13 +23,12 @@ public class Recognition extends Thread {
     
     private byte[] buffer;
     
-    private CMChannel chanel;
+    private final CMChannel chanel;
     
-    public String MyGroup;
     private final String MyIP = InetAddress.getLocalHost().getHostAddress();
+    public String MyGroup = "";
     
     public Recognition(CMChannel chanel) throws IOException{
-        this.MyGroup = "";
         this.chanel = chanel;
         this.rede = new MulticastSocket(PORTA);
     }
@@ -51,9 +48,8 @@ public class Recognition extends Thread {
         
         String[] info;
         String action;
-        String user;
-        String group;
-        String MyID;
+        String IP;
+        String group;        
         
         while(true){
             try{
@@ -63,42 +59,37 @@ public class Recognition extends Thread {
                 
                 info   = new String(buffer).split("-"); 
                 action = info[0];
-                user   = info[1];
+                IP     = info[1];
                 group  = info[2];
-                MyID   = info[3]; 
                 
-                System.out.println(Arrays.toString(info));
-                
-                if(MyGroup.equalsIgnoreCase(group)){
+                if(MyGroup.equals(group)){
                     switch (action) {
                         case "join":
-                            if(!chanel.userList.contains(user)){
-                                chanel.userList.add(user); 
-                                chanel.causalOrder.AddUserTOClock(user);
+                            if(!chanel.userList.contains(IP)){
+                                chanel.userList.add(IP); 
+                                chanel.causalOrder.AddUserTOClock(IP);
                             }
-                            
                             String msg = "inGroup" + "-" + MyIP + "-" + group + "-";
                             sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
                             rede.send(sendPacket);
                             break;
+                            
                         case "leave":
-                            chanel.userList.remove(user);
-                            //chanel.causalOrder.RemoveUserTOClock(user);
+                            chanel.userList.remove(IP);
+                            chanel.causalOrder.RemoveUserTOClock(IP);
                             break;
                             
                         case "inGroup":
-                            if(!user.equals(MyIP) && !chanel.userList.contains(user)){
-                                chanel.userList.add(user); 
-                                chanel.causalOrder.AddUserTOClock(user);
+                            if(!IP.equals(MyIP) && !chanel.userList.contains(IP)){
+                                chanel.userList.add(IP); 
+                                chanel.causalOrder.AddUserTOClock(IP);
                             }
-                                
                             break;
                         default:
                             System.out.println("Função inválida!");
                             break;
                     }
                 }
-                
                 System.out.println(chanel.userList);
             }catch(IOException ex){
                 System.out.println("Error thread recognition: " + ex);

@@ -15,27 +15,28 @@ import java.util.Map;
  * @author danie && xico
  */
 public class CausalOrder {
-    private Map<String, Integer> vectorClock;
+    private final Map<String, Integer> vectorClock;
+    private final ArrayList<Message> bufferMessages;
+    
     private final String IP;
-    private ArrayList<Message> Messages;
+    
     private final ICausalMulticast application;
     
     /* construtor da classe */
     public CausalOrder(ICausalMulticast application, String IP){
         this.IP = IP;
-        this.Messages = new ArrayList();
         this.application =  application;
+        
+        this.bufferMessages = new ArrayList();
         this.vectorClock = new HashMap();
     }
-    /* metodo para inicializar vetor com 0 */
+    
     public void AddUserTOClock(String IP){
-
         vectorClock.put(IP, 0);
-        this.imprimir_Vetor();
     }
     
-    public void RemoveUserTOClock(){
-        
+    public void RemoveUserTOClock(String IP){
+        vectorClock.remove(IP);
     }
     
     /* metodo para atualizar o vetor quando é recebido algum valor*/
@@ -60,43 +61,32 @@ public class CausalOrder {
     }
     
     /* metodo para verificar se é possível trocar os valores do vetor*/
-     private boolean verificar_Relogio(Map<String, Integer> receiveClock, String ipReceive) {
-        for ( String key : receiveClock.keySet() ) {
-            System.out.println( key );
-            int clock1 = (int) this.vectorClock.get(key);
-            int clock2 = (int) receiveClock.get(key);
-            if(clock2 <= clock1){
-                System.out.println("ok "+key);
-            }else{
-                return false;
-            }
+     private boolean checkClock(Map<String, Integer> receiveClock) {
+        for (String key : receiveClock.keySet()){
+            int myClock = (int) this.vectorClock.get(key);
+            int reClock = (int) receiveClock.get(key);
             
-                
-           
+            if(reClock > myClock)
+                return false; 
         }       
         return true;
     }
     
      /*  Metodo que analisa se as mensagens do buffer podem ser entregues ao destinatario  */
     private void ver_entrega_Buffer() {
-        for(int i = this.Messages.size()-1; i >= 0 ;i--){
-            Message message = this.Messages.get(i);
-            
-            //verifica se a mensagem pode mas ainda nao foi entregue
-            if(this.verificar_Relogio(message.vectorClock, message.user) && !message.delivery) {
+        
+        for(Message message : bufferMessages){
+            if( this.checkClock(message.vectorClock) && !message.delivery){
+                application.deliver(message.user + ": " + message.Message);
                 message.delivery = true;
-                String m = message.user + ": " + message.Message;
-               
-                //mostrar na tela daniel
-               this.application.deliver(m);
-            } 
+            }
         }
     }
     /*
         Ordena as mensagens de acordo com a ordem causal
     */
     public void ordenar_mensagem_Receive(Message message) {
-        this.Messages.add(message);
+        this.bufferMessages.add(message);
        
          // Chama metodo que verifica se o buffer tem mensagens a serem entregues
         this.ver_entrega_Buffer();
@@ -118,28 +108,17 @@ public class CausalOrder {
      
     /*     Metodo para somar mais um ao relogio no id atual  */
     public void somar_Relogio() {
-        Iterator myVector = vectorClock.entrySet().iterator();
-        while(myVector.hasNext()){
-            Map.Entry m = (Map.Entry) myVector.next();
-            if(m.getKey().equals(IP)){
-                int clock =  (int) m.getValue();
-                vectorClock.replace(IP, clock + 1);
-            }
-        }  
-        this.imprimir_Vetor();
+        int clock = vectorClock.get(IP);
+        vectorClock.replace(IP, clock + 1);
     }
     
-    /*  Metodo para retornar os valores do relogio    */ 
-    public Map<String, Integer> get_Relogio() {
+    public Map<String, Integer> getClock() {
         return this.vectorClock;
     }
     
-    /*  Metodo para imprimir os valores do relogio    */
-    public void imprimir_Vetor() {
-        for(Map.Entry m  : vectorClock.entrySet()){
-            String ip = (String) m.getKey();
-            int clock = (int) m.getValue();   
-            System.out.println(ip + " [" + clock + "]");
-        }
+    public void printVector() {
+        
+        for(Map.Entry m  : vectorClock.entrySet())
+            System.out.println(m.getKey() + " [" + m.getValue() + "]");
     }
 }
