@@ -33,9 +33,6 @@ public class Recognition extends Thread {
         this.rede = new MulticastSocket(PORTA);
     }
 
-    /**
-     *
-     */
     @Override
     public synchronized void run(){
         try {
@@ -90,7 +87,7 @@ public class Recognition extends Thread {
                             break;
                     }
                 }
-                System.out.println(chanel.userList);
+                //System.out.println(chanel.userList); lista de usuarios na sala
             }catch(IOException ex){
                 System.out.println("Error thread recognition: " + ex);
             }   

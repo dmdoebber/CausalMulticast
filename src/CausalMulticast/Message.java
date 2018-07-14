@@ -16,12 +16,12 @@ public class Message implements Serializable{
     public Map<String, Integer> vectorClock;
     public boolean delivery;
     public String Message;
-    public String user;
+    public String IP;
     
-    public Message(String user, String Message, Map<String, Integer> vectorClock){
+    public Message(String IP, String Message, Map<String, Integer> vectorClock){
         this.vectorClock = vectorClock;
         this.Message = Message;
-        this.user = user;
+        this.IP = IP;
         this.delivery = false;
     }
     
