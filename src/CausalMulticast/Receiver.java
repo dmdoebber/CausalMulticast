@@ -43,7 +43,6 @@ public class Receiver extends Thread{
                 Message message = (Message) ois.readObject();
                 
                 causalOrder.receiveMessages(message);
-
             } catch (IOException | ClassNotFoundException ex) {
                 System.out.println("Error thread receiver " + ex);
             }

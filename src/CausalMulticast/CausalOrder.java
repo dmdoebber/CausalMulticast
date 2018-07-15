@@ -50,17 +50,17 @@ public class CausalOrder {
     }
     
     private void checkDelivery() {
-        
         for(Message message : bufferMessages){
-            if( this.checkClock(message.vectorClock) && !message.delivery){
-                
+            if(message.delivery)
+                continue;
+            
+            if( this.checkClock(message.vectorClock)){               
                 application.deliver(message.IP + ": " + message.Message);
                 message.delivery = true;
             }
         }
     }
 
-    //when Pi receives msg from Pj
     public void receiveMessages(Message message) {
         this.bufferMessages.add(message);
         
@@ -72,8 +72,8 @@ public class CausalOrder {
         this.checkDelivery();
     }
      
-    /*     Metodo para somar mais um ao relogio no id atual  */
-    public void somar_Relogio() {
+    // SOMA RELOGIO NO MEU ID
+    public void ClockPP() {
         int clock = vectorClock.get(IP);
         vectorClock.replace(IP, clock + 1);
     }
@@ -83,32 +83,7 @@ public class CausalOrder {
     }
     
     public void printVector() {
-        
         for(Map.Entry m  : vectorClock.entrySet())
             System.out.println(m.getKey() + " [" + m.getValue() + "]");
-    }
-    
-    
-    
-    
-    /* metodo para atualizar o vetor quando é recebido algum valor*/
-    private void atualiza_Relogio_no_Receive(Map<String, Integer> receiveClock) {
-        Iterator myVector = vectorClock.entrySet().iterator();
-        Iterator receiveVector = receiveClock.entrySet().iterator();
-        
-        while(myVector.hasNext() && receiveVector.hasNext()){
-            Map.Entry m = (Map.Entry) myVector.next();
-            Map.Entry r = (Map.Entry) receiveVector.next();
-            
-            String id1 = (String) m.getKey();
-            String id2 = (String) r.getKey();
-            
-            if(!id1.equals(id2)){
-                int clock1 = (int) m.getValue();
-                int clock2 = (int) r.getValue();
-                
-                vectorClock.replace(id1, Math.max(clock1, clock2));
-            }
-        }
     }
 }

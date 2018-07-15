@@ -89,7 +89,7 @@ public class CMChannel{
         
         for(int i = 0; i < userList.size(); i++){
             
-            if(IPFail.equals(userList.get(i))) continue; //arrumar ainda, lista de mensagens não enviadas
+            //if(IPFail.equals(userList.get(i))) continue; //arrumar ainda, lista de mensagens não enviadas
             
             message = new Message(MyIP, msg, causalOrder.getClock());            
             
@@ -103,6 +103,6 @@ public class CMChannel{
             socket.send(sendPacket);
         }
         
-        this.causalOrder.somar_Relogio();
+        this.causalOrder.ClockPP();
     }
 }
