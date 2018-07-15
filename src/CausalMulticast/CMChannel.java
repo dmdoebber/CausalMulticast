@@ -112,7 +112,8 @@ public class CMChannel{
         
         System.out.println(afterMessage);
         if(afterMessage != null){
-            JOptionPane.showConfirmDialog(null, "Enviar?");
+            
+            if(JOptionPane.showConfirmDialog(null, "Enviar?") != 0) return;
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(baos);
             oos.writeObject(afterMessage);
