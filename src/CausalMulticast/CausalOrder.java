@@ -7,7 +7,6 @@ package CausalMulticast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -69,6 +68,8 @@ public class CausalOrder {
             vectorClock.replace(message.IP, clock + 1);
         }
         
+        this.printVectorClock();
+        
         this.checkDelivery();
     }
      
@@ -82,7 +83,7 @@ public class CausalOrder {
         return this.vectorClock;
     }
     
-    public void printVector() {
+    public void printVectorClock() {
         for(Map.Entry m  : vectorClock.entrySet())
             System.out.println(m.getKey() + " [" + m.getValue() + "]");
     }
