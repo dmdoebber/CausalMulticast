@@ -35,6 +35,8 @@ public class CMChannel{
     public List<String> userList;
     public CausalOrder causalOrder;
     
+    Message afterMessage = null;
+    
     private final String MyIP = InetAddress.getLocalHost().getHostAddress();
         
     public CMChannel(ICausalMulticast application) throws IOException{       
@@ -79,7 +81,7 @@ public class CMChannel{
         InetAddress IP;
         Message message;
         
-        Message afterMessage = null;
+        
         
         String stringFail = JOptionPane.showInputDialog("Digite o numero do usuario para não enviar!", -1);
         
