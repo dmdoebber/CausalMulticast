@@ -79,19 +79,23 @@ public class CMChannel{
         InetAddress IP;
         Message message;
         
+        Message afterMessage = null;
+        
         String stringFail = JOptionPane.showInputDialog("Digite o numero do usuario para não enviar!", -1);
         
         int fail = Integer.parseInt(stringFail);
         String IPFail = "";
         
-        if(fail <= userList.size() && fail > 0)
+        if(fail <= userList.size() && fail >= 0)
             IPFail = userList.get(fail);
         
         for(int i = 0; i < userList.size(); i++){
+            message = new Message(MyIP, msg, causalOrder.copy());
             
-            if(IPFail.equals(userList.get(i))) continue; //arrumar ainda, lista de mensagens não enviadas
-            
-            message = new Message(MyIP, msg, causalOrder.getClock());            
+            if(IPFail.equals(userList.get(i))){
+                afterMessage = message;
+                continue;
+            }                       
             
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -102,7 +106,20 @@ public class CMChannel{
             sendPacket = new DatagramPacket(data, data.length, IP, PORT_MESSAGE);
             socket.send(sendPacket);
         }
-        
         this.causalOrder.ClockPP();
+        
+        System.out.println(afterMessage);
+        if(afterMessage != null){
+            JOptionPane.showConfirmDialog(null, "Enviar?");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(afterMessage);
+            byte[] data = baos.toByteArray();
+            
+            IP = InetAddress.getByName(afterMessage.IP);
+            sendPacket = new DatagramPacket(data, data.length, IP, PORT_MESSAGE);
+            socket.send(sendPacket);
+            afterMessage = null;
+        }                
     }
 }

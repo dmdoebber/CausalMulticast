@@ -44,7 +44,7 @@ public class CausalOrder {
             
             if(reClock > myClock)
                 return false; 
-        }       
+        } 
         return true;
     }
     
@@ -63,17 +63,16 @@ public class CausalOrder {
     public void receiveMessages(Message message) {
         this.bufferMessages.add(message);
         
+        this.checkDelivery();
+        
+        this.printBufferMessages();
+
         if(!IP.equals(message.IP)){
             int clock = vectorClock.get(message.IP);
             vectorClock.replace(message.IP, clock + 1);
         }
-        
-        this.printVectorClock();
-        
-        this.checkDelivery();
     }
      
-    // SOMA RELOGIO NO MEU ID
     public void ClockPP() {
         int clock = vectorClock.get(IP);
         vectorClock.replace(IP, clock + 1);
@@ -86,5 +85,20 @@ public class CausalOrder {
     public void printVectorClock() {
         for(Map.Entry m  : vectorClock.entrySet())
             System.out.println(m.getKey() + " [" + m.getValue() + "]");
+    }
+    
+    private void printBufferMessages(){
+        System.out.print("buffer = [");
+        for(Message message : bufferMessages)
+            if(!message.delivery)
+                System.out.print(message);
+        System.out.println("];");
+    }
+    
+    public Map copy(){
+        Map<String, Integer> copy = new HashMap();
+        for(String key : vectorClock.keySet())
+            copy.put(key, vectorClock.get(key));
+        return copy;
     }
 }
