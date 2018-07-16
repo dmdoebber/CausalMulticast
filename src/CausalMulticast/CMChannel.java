@@ -91,7 +91,6 @@ public class CMChannel{
             
             if(IPFail.equals(userList.get(i))){
                 delayedMessages.put(message, userList.get(i));
-                System.out.println(delayedMessages);
                 continue;
             }             
             
@@ -106,7 +105,7 @@ public class CMChannel{
         }
         
         if(!delayedMessages.isEmpty()){
-            if(JOptionPane.showConfirmDialog(null, "DESEJA ENVIAR AS MENSAGENS EM ESPERA?") == 0){
+            if(JOptionPane.showConfirmDialog(null, "DESEJA ENVIAR AS MENSAGENS EM ESPERA?\n"+delayedMessages) == 0){
                 for(Message me : delayedMessages.keySet()){
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ObjectOutputStream oos = new ObjectOutputStream(baos);
