@@ -38,42 +38,50 @@ public class CausalOrder {
     }
     
     private boolean checkClock(Map<String, Integer> receiveClock) {
-        for (String key : receiveClock.keySet()){
-            int myClock = (int) this.vectorClock.get(key);
-            int reClock = (int) receiveClock.get(key);
-            
-            if(reClock > myClock)
-                return false; 
-        } 
+        for(String key : receiveClock.keySet()){
+            if(!vectorClock.get(key).equals(receiveClock.get(key)))
+                return false;
+        }
         return true;
     }
     
-    private void checkDelivery() {
-        for(Message message : bufferMessages){
-            if(message.delivery)
-                continue;
-            
-            if( this.checkClock(message.vectorClock)){               
-                application.deliver(message.IP + ": " + message.Message);
-                message.delivery = true;
-            }
-        }
-    }
-
     public void receiveMessages(Message message) {
-        this.bufferMessages.add(message);
+        boolean Continue = true;
         
-        this.checkDelivery();
         
-        this.printBufferMessages();
+        System.out.println(vectorClock);
+        if(this.checkClock(message.vectorClock)){
+            this.ClockPP(message.IP);
+            this.application.deliver(message.IP + ": " + message);
+            
+            this.printBufferMessages();
+            
 
-        if(!IP.equals(message.IP)){
-            int clock = vectorClock.get(message.IP);
-            vectorClock.replace(message.IP, clock + 1);
+            if(!bufferMessages.isEmpty()){
+                while(Continue){
+                    Continue = false;
+                    for(Message msg : bufferMessages){
+                        
+                        if(this.checkClock(msg.vectorClock)){
+                            
+                            this.ClockPP(msg.IP);
+                            this.application.deliver(message.IP + ": " + message);
+                            this.bufferMessages.remove(msg);
+                            
+                            Continue = false;
+                            
+                            break;
+                        }
+                    }                    
+                }        
+            }
+        }else{
+            System.out.println("pq aqui ===" + bufferMessages.size());
+            bufferMessages.add(message);
         }
     }
      
-    public void ClockPP() {
+    public void ClockPP(String IP) {
         int clock = vectorClock.get(IP);
         vectorClock.replace(IP, clock + 1);
     }

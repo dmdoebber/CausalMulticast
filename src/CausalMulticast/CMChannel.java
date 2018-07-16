@@ -13,7 +13,9 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 /**
@@ -35,7 +37,7 @@ public class CMChannel{
     public List<String> userList;
     public CausalOrder causalOrder;
     
-    Message afterMessage = null;
+    private final Map<Message, String> delayedMessages = new HashMap();
     
     private final String MyIP = InetAddress.getLocalHost().getHostAddress();
         
@@ -81,23 +83,20 @@ public class CMChannel{
         InetAddress IP;
         Message message;
         
+        //IMPRIME LISTA DE USUARIOS
+        System.out.println("USERLIST " + userList);
         
-        
-        String stringFail = JOptionPane.showInputDialog("Digite o numero do usuario para não enviar!", -1);
-        
-        int fail = Integer.parseInt(stringFail);
-        String IPFail = "";
-        
-        if(fail <= userList.size() && fail >= 0)
-            IPFail = userList.get(fail);
+        String IPFail = JOptionPane.showInputDialog("DIGITE UM IP PARA NÃO ENVIAR A MENSAGEM!", "192.168.0.");
         
         for(int i = 0; i < userList.size(); i++){
+            
             message = new Message(MyIP, msg, causalOrder.copy());
             
             if(IPFail.equals(userList.get(i))){
-                afterMessage = message;
+                delayedMessages.put(message, userList.get(i));
+                System.out.println(delayedMessages);
                 continue;
-            }                       
+            }             
             
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -108,21 +107,22 @@ public class CMChannel{
             sendPacket = new DatagramPacket(data, data.length, IP, PORT_MESSAGE);
             socket.send(sendPacket);
         }
-        this.causalOrder.ClockPP();
         
-        System.out.println(afterMessage);
-        if(afterMessage != null){
-            
-            if(JOptionPane.showConfirmDialog(null, "Enviar?") != 0) return;
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(afterMessage);
-            byte[] data = baos.toByteArray();
-            
-            IP = InetAddress.getByName(afterMessage.IP);
-            sendPacket = new DatagramPacket(data, data.length, IP, PORT_MESSAGE);
-            socket.send(sendPacket);
-            afterMessage = null;
-        }                
+        if(!delayedMessages.isEmpty()){
+            if(JOptionPane.showConfirmDialog(null, "DESEJA ENVIAR AS MENSAGENS EM ESPERA?") == 0){
+                for(Message me : delayedMessages.keySet()){
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ObjectOutputStream oos = new ObjectOutputStream(baos);
+                    oos.writeObject(me);
+                    byte[] data = baos.toByteArray();
+                    
+                    IP = InetAddress.getByName(delayedMessages.get(me));
+                    sendPacket = new DatagramPacket(data, data.length, IP, PORT_MESSAGE);
+                    socket.send(sendPacket);
+                }
+                delayedMessages.clear();
+            }
+        }
+        
     }
 }
