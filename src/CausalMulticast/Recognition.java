@@ -65,8 +65,6 @@ public class Recognition extends Thread {
                             if(!chanel.userList.contains(IP)){
                                 chanel.userList.add(IP); 
                                 chanel.causalOrder.AddUserTOClock(IP);
-                                
-                                System.out.println("UserList: " + chanel.userList);
                             }
                             String msg = "inGroup" + "-" + MyIP + "-" + group + "-";
                             sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
@@ -79,6 +77,7 @@ public class Recognition extends Thread {
                             break;
                             
                         case "inGroup":
+                            System.out.println("UserList: " + chanel.userList);
                             if(!IP.equals(MyIP) && !chanel.userList.contains(IP)){
                                 chanel.userList.add(IP); 
                                 chanel.causalOrder.AddUserTOClock(IP);

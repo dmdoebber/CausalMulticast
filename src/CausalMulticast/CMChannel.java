@@ -106,13 +106,13 @@ public class CMChannel{
         
         if(!delayedMessages.isEmpty()){
             if(JOptionPane.showConfirmDialog(null, "DESEJA ENVIAR AS MENSAGENS EM ESPERA?\n"+delayedMessages) == 0){
-                for(Message me : delayedMessages.keySet()){
+                for(Message M : delayedMessages.keySet()){
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ObjectOutputStream oos = new ObjectOutputStream(baos);
-                    oos.writeObject(me);
+                    oos.writeObject(M);
                     byte[] data = baos.toByteArray();
                     
-                    IP = InetAddress.getByName(delayedMessages.get(me));
+                    IP = InetAddress.getByName(delayedMessages.get(M));
                     sendPacket = new DatagramPacket(data, data.length, IP, PORT_MESSAGE);
                     socket.send(sendPacket);
                 }

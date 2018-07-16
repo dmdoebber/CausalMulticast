@@ -62,7 +62,7 @@ public class CausalOrder {
                             break;
                         }
                     }                    
-                }        
+                }
             }
         }else
             bufferMessages.add(message);
