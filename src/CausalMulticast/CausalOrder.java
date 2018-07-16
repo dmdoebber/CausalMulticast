@@ -59,7 +59,7 @@ public class CausalOrder {
 
             if(!bufferMessages.isEmpty()){
                 while(Continue){
-                    Continue = true;
+                    Continue = false;
                     for(Message msg : bufferMessages){
                         
                         if(this.checkClock(msg.vectorClock)){
@@ -68,7 +68,7 @@ public class CausalOrder {
                             this.application.deliver(message.IP + ": " + message);
                             this.bufferMessages.remove(msg);
                             
-                            Continue = false;
+                            Continue = true;
                             
                             break;
                         }
