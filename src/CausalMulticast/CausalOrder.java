@@ -59,7 +59,7 @@ public class CausalOrder {
 
             if(!bufferMessages.isEmpty()){
                 while(Continue){
-                    Continue = false;
+                    Continue = true;
                     for(Message msg : bufferMessages){
                         
                         if(this.checkClock(msg.vectorClock)){
