@@ -6,8 +6,6 @@
 package Application;
 
 import CausalMulticast.*;
-import CausalMulticast.ICausalMulticast;
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -21,9 +19,9 @@ import javax.swing.DefaultListModel;
  */
 public class Application extends javax.swing.JFrame implements ICausalMulticast{
     
-    private List<String> buffer;
-    private DefaultListModel listBuffer;
-    private CMChannel canal;
+    private final List<String> buffer;          //NÃO USADO
+    private final DefaultListModel listBuffer;  //NÃO USADO
+    private final CMChannel canal;
     
     public Application() throws IOException {
         initComponents();
@@ -34,7 +32,7 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         this.canal = new CMChannel(this);
         
         this.jListBuffer.setModel(listBuffer);
-        jPanel1.setBackground(Color.CYAN);
+        this.setTitle("CausalMulticast");
     }  
     
     @Override
@@ -60,9 +58,10 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setText("Grupo:");
+        jLabel1.setText("Group:");
 
         join.setText("Join");
         join.addActionListener(new java.awt.event.ActionListener() {
@@ -189,7 +188,7 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
         }
        
     }//GEN-LAST:event_joinActionPerformed
-
+    
     private void leaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveActionPerformed
        
         try{
@@ -198,6 +197,7 @@ public class Application extends javax.swing.JFrame implements ICausalMulticast{
             
             this.canal.leave(user, dest);
             
+            this.txtArea.setText("");
             this.join.setEnabled(true);
             this.nameGroup.setEditable(true);
             this.leave.setEnabled(false);

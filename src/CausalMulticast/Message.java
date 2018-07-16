@@ -19,9 +19,9 @@ public class Message implements Serializable{
     public String IP;
     
     public Message(String IP, String Message, Map<String, Integer> vectorClock){
-        this.vectorClock = vectorClock;
-        this.Message = Message;
         this.IP = IP;
+        this.Message = Message;
+        this.vectorClock = vectorClock;        
         this.delivery = false;
     }
     

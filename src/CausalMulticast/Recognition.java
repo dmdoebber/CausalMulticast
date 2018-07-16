@@ -19,7 +19,7 @@ public class Recognition extends Thread {
     private final int PORTA = 2020;
     
     private DatagramPacket receivePacket;
-    private MulticastSocket rede;
+    private final MulticastSocket rede;
     
     private byte[] buffer;
     
@@ -65,6 +65,8 @@ public class Recognition extends Thread {
                             if(!chanel.userList.contains(IP)){
                                 chanel.userList.add(IP); 
                                 chanel.causalOrder.AddUserTOClock(IP);
+                                
+                                System.out.println("UserList: " + chanel.userList);
                             }
                             String msg = "inGroup" + "-" + MyIP + "-" + group + "-";
                             sendPacket = new DatagramPacket(msg.getBytes(), msg.length(), IP_MIDDLEWARE, PORTA);
@@ -87,7 +89,6 @@ public class Recognition extends Thread {
                             break;
                     }
                 }
-                //System.out.println(chanel.userList); lista de usuarios na sala
             }catch(IOException ex){
                 System.out.println("Error thread recognition: " + ex);
             }   

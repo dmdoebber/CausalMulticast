@@ -37,7 +37,7 @@ public class CMChannel{
     public List<String> userList;
     public CausalOrder causalOrder;
     
-    private final Map<Message, String> delayedMessages = new HashMap();
+    private final Map<Message, String> delayedMessages;
     
     private final String MyIP = InetAddress.getLocalHost().getHostAddress();
         
@@ -46,8 +46,9 @@ public class CMChannel{
         socket = new DatagramSocket(PORT_MESSAGE);
         
         userList = new ArrayList();
+        delayedMessages = new HashMap();
                 
-        causalOrder = new CausalOrder(application, MyIP);
+        causalOrder = new CausalOrder(application);
         
         recognition = new Recognition(this);
         recognition.start();
@@ -83,13 +84,9 @@ public class CMChannel{
         InetAddress IP;
         Message message;
         
-        //IMPRIME LISTA DE USUARIOS
-        System.out.println("USERLIST " + userList);
-        
         String IPFail = JOptionPane.showInputDialog("DIGITE UM IP PARA NÃO ENVIAR A MENSAGEM!", "192.168.0.");
         
         for(int i = 0; i < userList.size(); i++){
-            
             message = new Message(MyIP, msg, causalOrder.copy());
             
             if(IPFail.equals(userList.get(i))){
@@ -123,6 +120,5 @@ public class CMChannel{
                 delayedMessages.clear();
             }
         }
-        
     }
 }

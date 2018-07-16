@@ -11,18 +11,15 @@ import java.util.Map;
 
 /**
  *
- * @author danie && xico
+ * @author danie
  */
 public class CausalOrder {
     private final Map<String, Integer> vectorClock;
     private final ArrayList<Message> bufferMessages;
     
-    private final String IP;
-    
     private final ICausalMulticast application;
     
-    public CausalOrder(ICausalMulticast application, String IP){
-        this.IP = IP;
+    public CausalOrder(ICausalMulticast application){
         this.application =  application;
         
         this.bufferMessages = new ArrayList();
@@ -48,49 +45,38 @@ public class CausalOrder {
     public void receiveMessages(Message message) {
         boolean Continue = true;
         
-        
-        System.out.println(vectorClock);
         if(this.checkClock(message.vectorClock)){
-            this.ClockPP(message.IP);
+            this.ClockPlusPlus(message.IP);
             this.application.deliver(message.IP + ": " + message);
             
-            this.printBufferMessages();
-            
-
             if(!bufferMessages.isEmpty()){
                 while(Continue){
                     Continue = false;
                     for(Message msg : bufferMessages){
-                        
                         if(this.checkClock(msg.vectorClock)){
-                            
-                            this.ClockPP(msg.IP);
+                            this.ClockPlusPlus(msg.IP);
                             this.application.deliver(msg.IP + ": " + msg);
                             this.bufferMessages.remove(msg);
                             
-                            Continue = true;
-                            
+                            Continue = true;                    
                             break;
                         }
                     }                    
                 }        
             }
-        }else{
-            System.out.println("pq aqui ===" + bufferMessages.size());
+        }else
             bufferMessages.add(message);
-        }
+        
+        this.printBufferMessages();
     }
      
-    public void ClockPP(String IP) {
+    public void ClockPlusPlus(String IP) {
         int clock = vectorClock.get(IP);
         vectorClock.replace(IP, clock + 1);
     }
     
-    public Map<String, Integer> getClock() {
-        return this.vectorClock;
-    }
-    
     public void printVectorClock() {
+        System.out.println("My Vector Clock!");
         for(Map.Entry m  : vectorClock.entrySet())
             System.out.println(m.getKey() + " [" + m.getValue() + "]");
     }
