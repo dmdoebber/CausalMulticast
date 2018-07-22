@@ -83,7 +83,7 @@ public class CMChannel{
     public void mcSend(String msg, String dest) throws IOException{
         InetAddress IP;
         Message message;
-        
+        System.out.println("USERLIST - " + userList);
         String IPFail = JOptionPane.showInputDialog("DIGITE UM IP PARA NÃO ENVIAR A MENSAGEM!", "192.168.0.");
         
         for(int i = 0; i < userList.size(); i++){

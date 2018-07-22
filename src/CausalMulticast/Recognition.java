@@ -77,7 +77,6 @@ public class Recognition extends Thread {
                             break;
                             
                         case "inGroup":
-                            System.out.println("UserList: " + chanel.userList);
                             if(!IP.equals(MyIP) && !chanel.userList.contains(IP)){
                                 chanel.userList.add(IP); 
                                 chanel.causalOrder.AddUserTOClock(IP);
